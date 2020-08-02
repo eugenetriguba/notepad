@@ -1,20 +1,19 @@
-#include <stdlib.h>
 #include <check.h>
+#include <stdlib.h>
+
 #include "../src/notepad.h"
 
-START_TEST (test_startup_notepad_app_return_value)
-{
+START_TEST(test_startup_notepad_app_return_value) {
     int return_value;
     int fd = mkstemp("q");
 
     return_value = startup_notepad_app(notepad_create(fd));
-    
+
     ck_assert_int_eq(return_value, 0);
 }
 END_TEST
 
-Suite *notepad_suite(void)
-{
+Suite *notepad_suite(void) {
     Suite *s;
     TCase *tc_core;
 
@@ -28,8 +27,7 @@ Suite *notepad_suite(void)
     return s;
 }
 
-int main(void)
-{
+int main(void) {
     int failed_tests = 0;
     Suite *s;
     SRunner *runner;
