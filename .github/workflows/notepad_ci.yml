@@ -11,7 +11,9 @@ jobs:
     - uses: actions/checkout@v2
       
     - name: Dependencies
-      run: sudo apt-get install cmocka
+      run: |
+        sudo apt-get update
+        sudo apt-get install cmocka
       
     - name: Build
       run: make build
