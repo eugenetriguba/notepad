@@ -40,7 +40,5 @@ int main(void) {
 	cmocka_unit_test(test_contents_in_notepad_include_fd_contents)
     };
 
-    int count_fail_tests = cmocka_run_group_tests(tests, NULL, NULL);
-
-    return (count_fail_tests == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }
