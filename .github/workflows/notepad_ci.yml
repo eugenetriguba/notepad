@@ -1,0 +1,20 @@
+name: Notepad CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Dependencies
+      run: sudo apt-get install cmocka
+      
+    - name: Build
+      run: make build
+      
+    - name: Test
+      run: make test
