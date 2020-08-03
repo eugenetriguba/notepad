@@ -13,7 +13,7 @@ jobs:
     - name: Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install cmocka
+        sudo apt-get install libcmocka-dev
       
     - name: Build
       run: make build
