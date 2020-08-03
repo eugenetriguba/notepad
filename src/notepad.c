@@ -7,6 +7,7 @@
 #include <termios.h>
 #include <unistd.h>
 
+
 // notepad_create is what initializes our notepad_t.
 //
 // Args:

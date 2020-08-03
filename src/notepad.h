@@ -16,6 +16,7 @@ typedef struct notepad_t {
     char contents[1024];
     int debug_mode;   
 } notepad_t;
+
 notepad_t *notepad_create(int file_descriptor);
 void notepad_destroy(notepad_t *notepad);
 void enable_raw_mode(notepad_t *notepad);
