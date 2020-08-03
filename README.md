@@ -10,12 +10,9 @@ run the program.
 
 ## Testing
 
-Tests are written using [Check](https://libcheck.github.io).
-
-You'll want to install Check on your system to run the tests:
-https://libcheck.github.io/check/web/install.html
-
-Then, you can run `make test`.
+Tests are written using [CMocka](https://cmocka.org/).
+You'll want to ensure it is installed on your system before
+running the tests. Once installed, you can run `make test`.
 
 ## License
 
