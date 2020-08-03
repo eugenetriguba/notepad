@@ -1,5 +1,6 @@
 OPTIMIZATION_FLAG = -O0
-CC_FLAGS = -Wall -Wextra -pedantic $(OPTIMIZATION_FLAG)
+COV_FLAG = ''
+CC_FLAGS = -Wall -Wextra -pedantic $(OPTIMIZATION_FLAG) $(COV_FLAG)
 
 SRC_ENTRY_FILE = src/main.c
 SRC_FILES = src/notepad.c src/terminal.c
@@ -17,7 +18,11 @@ build: $(SRC_ENTRY_FILE) $(SRC_FILES)
 build_optimized: $(SRC_ENTRY_FILE) $(SRC_FILES)
 	$(MAKE) OPTIMIZATION_FLAG=-O3 build
 
-test: $(TEST_FILES) tests/helpers.c
+memcheck:
+	$(MAKE) build
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./notepad
+
+test: $(TEST_FILES) $(TEST_HELPERS)
 	@for file in $(TEST_FILES); do \
 	    $(CC) $(SRC_FILES) $${file} $(TEST_HELPERS) -l cmocka -o $(TEST_OUTFILE) $(CC_FLAGS) -std=gnu11; \
 	    echo "Running $${file}"; \
@@ -25,6 +30,9 @@ test: $(TEST_FILES) tests/helpers.c
 	    echo -e "\n"; \
 	done
 
+test_cov: $(TEST_FILES) $(TEST_HELPERS)
+	$(MAKE) COV_FLAG=--coverage test
+
 clean:
-	rm -f $(BUILD_OUTFILE) $(TEST_OUTFILE)
+	rm -f $(BUILD_OUTFILE) $(TEST_OUTFILE) ./*.gcno ./*.gcda
 
