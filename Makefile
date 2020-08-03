@@ -4,5 +4,8 @@ build: src/*.c
 	$(CC) src/*.c -o notepad $(CC_FLAGS)
 
 test:
-	$(CC) tests/check_notepad.c -o check_notepad $(CC_FLAGS)
-	$(CC) notepad.o check_notepad.o -l check -o check_notepad_tests
+	$(CC) src/notepad.c  tests/*.c -l cmocka -o test_run -Wall -Wextra -pedantic
+	./test_run
+
+clean:
+	rm -f notepad test_run

@@ -3,5 +3,4 @@
 
 # Build
 notepad
-check_notepad
-check_notepad_tests
+test_run
