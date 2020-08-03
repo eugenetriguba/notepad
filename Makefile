@@ -4,7 +4,7 @@ build: src/*.c
 	$(CC) src/*.c -o notepad $(CC_FLAGS)
 
 test:
-	$(CC) src/notepad.c  tests/*.c -l cmocka -o test_run -Wall -Wextra -pedantic
+	$(CC) src/notepad.c  tests/*.c -l cmocka -o test_run -Wall -Wextra -pedantic -std=gnu11
 	./test_run
 
 clean:

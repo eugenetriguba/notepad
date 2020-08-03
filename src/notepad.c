@@ -7,8 +7,10 @@
 #include <termios.h>
 #include <unistd.h>
 
+#include "terminal.h"
 
-// notepad_create is what initializes our notepad_t.
+// notepad_create is what initializes our notepad_t
+// and starts up the terminal settings in raw mode.
 //
 // Args:
 //   file_descriptor: The descriptor for where to read from.
@@ -23,8 +25,10 @@ notepad_t *notepad_create(int file_descriptor) {
     }
 
     notepad->file_descriptor = file_descriptor;
-    enable_raw_mode(notepad);
+    notepad->terminal = terminal_create(file_descriptor);
     notepad->debug_mode = 0;
+
+    enable_raw_mode(notepad->terminal);
 
     return notepad;
 }
@@ -38,7 +42,7 @@ notepad_t *notepad_create(int file_descriptor) {
 // Args:
 //   notepad: An initialized notepad_t.
 void notepad_destroy(notepad_t *notepad) {
-    disable_raw_mode(notepad);
+    disable_raw_mode(notepad->terminal);
     free(notepad);
 }
 
@@ -54,7 +58,7 @@ void notepad_destroy(notepad_t *notepad) {
 //
 // Args:
 //   notepad: An initialized notepad_t.
-void read_all_bytes(notepad_t *notepad) {
+void read_all_from_fd(notepad_t *notepad) {
     char tmp;
 
     while (1) {
@@ -62,8 +66,8 @@ void read_all_bytes(notepad_t *notepad) {
 	read(notepad->file_descriptor, &tmp, 1);
 
 	if (notepad->debug_mode && tmp != '\0') {
-	    iscntrl(tmp) ? printf("%d\n", tmp)
-			 : printf("%d ('%c')\n", tmp, tmp);
+	    iscntrl(tmp) ? printf("%d\r\n", tmp)
+			 : printf("%d ('%c')\r\n", tmp, tmp);
 	}
 
 	if (tmp == 'q') {
@@ -74,48 +78,6 @@ void read_all_bytes(notepad_t *notepad) {
     }
 }
 
-// enable_raw_mode enables a sort of "raw mode"
-// for the notepad. There is no "raw mode" persay
-// that we can turn off and on. What we do is turn
-// off a variety of flags that have to do with features
-// that process the text for us in various ways.
-//
-// The original settings are saved into the notepad's
-// orig field for when we want to disable the mode.
-//
-// Furthermore, a timeout is setup for read() calls
-// so the read() call is not blocking us from doing
-// something else on the screen.
-//
-// Args:
-//   notepad: An initialized notepad_t.
-void enable_raw_mode(notepad_t *notepad) {
-    tcgetattr(notepad->file_descriptor, &notepad->orig);
-
-    notepad->raw = notepad->orig;
-    notepad->raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
-    notepad->raw.c_oflag &= ~(OPOST);
-    notepad->raw.c_cflag |= (CS8);
-    notepad->raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
-
-    // min number of bytes needed for read() before it can return
-    notepad->raw.c_cc[VMIN] = 0;
-    // max time to wait before read() can return (in tenths of a sec)
-    notepad->raw.c_cc[VTIME] = 1;
-
-    tcsetattr(notepad->file_descriptor, TCSAFLUSH, &notepad->raw);
-}
-
-// disable_raw_mode sets our notepad's file
-// descriptor settings back to the original
-// ones.
-//
-// Args:
-//   notepad: An initialized notepad_t.
-void disable_raw_mode(notepad_t *notepad) {
-    tcsetattr(notepad->file_descriptor, TCSAFLUSH, &notepad->orig);
-}
-
 // startup_notepad_app runs our notepad
 // by reading in all the bytes from the
 // file descriptor, printing them out,
@@ -123,9 +85,12 @@ void disable_raw_mode(notepad_t *notepad) {
 //
 // Args:
 //   notepad: An initialized notepad_t.
+//
+// Returns:
+//   0, for the exit code for main().
 int startup_notepad_app(notepad_t *notepad) {
-    read_all_bytes(notepad);
-    printf("%s\n", notepad->contents);
+    read_all_from_fd(notepad);
+    printf("%s\r\n", notepad->contents);
     notepad_destroy(notepad);
 
     return 0;

@@ -1,27 +1,24 @@
 #ifndef NOTEPAD_H
 #define NOTEPAD_H
 
-#include <termios.h>
+#include "terminal.h"
 
 // notepad_t represents our notepad
 // with what file descriptor we are
-// reading from, termios settings for
-// our original settings and raw mode
-// settings, and we are in our notepad's
-// debug mode, and our notepad contents.
-typedef struct notepad_t {
+// reading from, a terminal_t so we can
+// alter the terminal's settings, and we
+// are in our notepad's debug mode, and
+// our notepad contents.
+typedef struct {
+    terminal_t *terminal;
     int file_descriptor;
-    struct termios orig;
-    struct termios raw;
     char contents[1024];
-    int debug_mode;   
+    int debug_mode;
 } notepad_t;
 
 notepad_t *notepad_create(int file_descriptor);
 void notepad_destroy(notepad_t *notepad);
-void enable_raw_mode(notepad_t *notepad);
-void disable_raw_mode(notepad_t *notepad);
-void read_all_bytes(notepad_t *notepad);
+void read_all_from_fd(notepad_t *notepad);
 
 int startup_notepad_app(notepad_t *notepad);
 
