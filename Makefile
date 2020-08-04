@@ -1,6 +1,5 @@
 OPTIMIZATION_FLAG = -O0
-COV_FLAG = ''
-CC_FLAGS = -Wall -Wextra -pedantic $(OPTIMIZATION_FLAG) $(COV_FLAG)
+CC_FLAGS = -Wall -Wextra -pedantic $(OPTIMIZATION_FLAG)
 
 SRC_ENTRY_FILE = src/main.c
 SRC_FILES = src/notepad.c src/terminal.c
@@ -29,9 +28,6 @@ test: $(TEST_FILES) $(TEST_HELPERS)
 	    ./$(TEST_OUTFILE); \
 	    echo -e "\n"; \
 	done
-
-test_cov: $(TEST_FILES) $(TEST_HELPERS)
-	$(MAKE) COV_FLAG=--coverage test
 
 clean:
 	rm -f $(BUILD_OUTFILE) $(TEST_OUTFILE) ./*.gcno ./*.gcda
