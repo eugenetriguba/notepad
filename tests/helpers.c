@@ -14,14 +14,15 @@ notepad_t *create_test_notepad(char *contents) {
 
     if (fwrite(contents, sizeof(char), num_of_elements, tmp) != num_of_elements) {
 	printf("writing %s to temp file failed.\r\n", contents);
-	exit(1);
+	exit(EXIT_FAILURE);
     }
 
     if (fseek(tmp, 0, SEEK_SET) != 0) {
 	printf("seeking back to beginning of file failed for %s failed.\r\n",
 	       contents);
-	exit(1);
+	exit(EXIT_FAILURE);
     };
 
     return notepad_create(fd);
 }
+
