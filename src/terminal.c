@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <termios.h>
 
+#include "utils.h"
+
 // terminal_create initializes our terminal_t.
 //
 // The current file_descriptors tc settings are set
@@ -14,7 +16,7 @@
 //   file_descriptor: The descriptor for where to
 //   retrieve settings and set terminal settings.
 //
-//   e.g. STDIN_FILENO from <unistd.h> or a FILE's fileno()
+//   e.g. STDIN_FILENO from <unistd.h>
 //
 // Returns:
 //   An initialized terminal_t or NULL if the malloc call failed.
@@ -26,7 +28,9 @@ terminal_t *terminal_create(int file_descriptor) {
 
     term->file_descriptor = file_descriptor;
 
-    tcgetattr(term->file_descriptor, &term->original_settings);
+    if (tcgetattr(term->file_descriptor, &term->original_settings) == -1) {
+	err_exit("terminal_create (tcgetattr)");
+    }
 
     term->raw_settings = term->original_settings;
     term->raw_settings.c_iflag &=
@@ -47,12 +51,16 @@ terminal_t *terminal_create(int file_descriptor) {
 // enable_raw_mode sets the term's raw_settings
 // to be the current file_descriptor's settings.
 void enable_raw_mode(terminal_t *term) {
-    tcsetattr(term->file_descriptor, TCSAFLUSH, &term->raw_settings);
+    if (tcsetattr(term->file_descriptor, TCSAFLUSH, &term->raw_settings) == -1) {
+	err_exit("enable_raw_mode (tcsetattr)");
+    }
 }
 
 // disable_raw_mode sets the term's original settings
 // to be the current file_descriptor's settings.
 void disable_raw_mode(terminal_t *term) {
-    tcsetattr(term->file_descriptor, TCSAFLUSH, &term->original_settings);
+    if (tcsetattr(term->file_descriptor, TCSAFLUSH, &term->original_settings) == -1) {
+	err_exit("disable_raw_mode (tcsetattr)");
+    }
 }
 

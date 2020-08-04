@@ -1,6 +1,7 @@
 #include "notepad.h"
 
 #include <ctype.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,6 +9,7 @@
 #include <unistd.h>
 
 #include "terminal.h"
+#include "utils.h"
 
 // notepad_create is what initializes our notepad_t
 // and starts up the terminal settings in raw mode.
@@ -63,7 +65,10 @@ void read_all_from_fd(notepad_t *notepad) {
 
     while (1) {
 	tmp = '\0';
-	read(notepad->file_descriptor, &tmp, 1);
+	
+	if (read(notepad->file_descriptor, &tmp, 1) == -1 && errno != EAGAIN) {
+	    err_exit("read_all_from_fd (read)");
+	}
 
 	if (notepad->debug_mode && tmp != '\0') {
 	    iscntrl(tmp) ? printf("%d\r\n", tmp)

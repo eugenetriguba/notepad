@@ -2,7 +2,7 @@ OPTIMIZATION_FLAG = -O0
 CC_FLAGS = -Wall -Wextra -pedantic $(OPTIMIZATION_FLAG)
 
 SRC_ENTRY_FILE = src/main.c
-SRC_FILES = src/notepad.c src/terminal.c
+SRC_FILES = src/notepad.c src/terminal.c src/utils.c
 
 TEST_FILES = tests/test_notepad.c tests/test_terminal.c
 TEST_HELPERS = tests/helpers.c
