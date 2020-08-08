@@ -9,7 +9,8 @@
 // alter the terminal's settings, and we
 // are in our notepad's debug mode, and
 // our notepad contents.
-typedef struct {
+typedef struct
+{
     terminal_t *terminal;
     int file_descriptor;
     char contents[1024];

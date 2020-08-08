@@ -18,10 +18,12 @@
 //
 // Returns:
 //   An initialized notepad_t or NULL if our malloc call failed.
-notepad_t *notepad_create(int file_descriptor) {
+notepad_t *notepad_create(int file_descriptor)
+{
     notepad_t *notepad = malloc(sizeof(notepad_t));
-    if (notepad == NULL) {
-	return NULL;
+    if (notepad == NULL)
+    {
+        return NULL;
     }
 
     notepad->file_descriptor = file_descriptor;
@@ -41,7 +43,8 @@ notepad_t *notepad_create(int file_descriptor) {
 //
 // Args:
 //   notepad: An initialized notepad_t.
-void notepad_destroy(notepad_t *notepad) {
+void notepad_destroy(notepad_t *notepad)
+{
     disable_raw_mode(notepad->terminal);
     free(notepad);
 }
@@ -58,23 +61,27 @@ void notepad_destroy(notepad_t *notepad) {
 //
 // Args:
 //   notepad: An initialized notepad_t.
-void read_all_from_fd(notepad_t *notepad) {
+void read_all_from_fd(notepad_t *notepad)
+{
     char tmp;
 
-    while (1) {
-	tmp = '\0';
-	read(notepad->file_descriptor, &tmp, 1);
+    while (1)
+    {
+        tmp = '\0';
+        read(notepad->file_descriptor, &tmp, 1);
 
-	if (notepad->debug_mode && tmp != '\0') {
-	    iscntrl(tmp) ? printf("%d\r\n", tmp)
-			 : printf("%d ('%c')\r\n", tmp, tmp);
-	}
+        if (notepad->debug_mode && tmp != '\0')
+        {
+            iscntrl(tmp) ? printf("%d\r\n", tmp)
+                         : printf("%d ('%c')\r\n", tmp, tmp);
+        }
 
-	if (tmp == 'q') {
-	    break;
-	}
+        if (tmp == 'q')
+        {
+            break;
+        }
 
-	strcat(notepad->contents, &tmp);
+        strcat(notepad->contents, &tmp);
     }
 }
 
@@ -88,11 +95,11 @@ void read_all_from_fd(notepad_t *notepad) {
 //
 // Returns:
 //   0, for the exit code for main().
-int startup_notepad_app(notepad_t *notepad) {
+int startup_notepad_app(notepad_t *notepad)
+{
     read_all_from_fd(notepad);
     printf("%s\r\n", notepad->contents);
     notepad_destroy(notepad);
 
     return 0;
 }
-
