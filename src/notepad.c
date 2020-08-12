@@ -71,8 +71,7 @@ void read_all_from_fd(notepad_t *notepad) {
         }
 
         if (notepad->debug_mode && tmp != '\0') {
-            iscntrl(tmp) ? printf("%d\r\n", tmp)
-                         : printf("%d ('%c')\r\n", tmp, tmp);
+            iscntrl(tmp) ? printf("%d\r\n", tmp) : printf("%d ('%c')\r\n", tmp, tmp);
         }
 
         if (tmp == 'q') {

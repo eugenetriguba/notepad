@@ -51,8 +51,7 @@ terminal_t *terminal_create(int file_descriptor) {
 // enable_raw_mode sets the term's raw_settings
 // to be the current file_descriptor's settings.
 void enable_raw_mode(terminal_t *term) {
-    if (tcsetattr(term->file_descriptor, TCSAFLUSH, &term->raw_settings) ==
-        -1) {
+    if (tcsetattr(term->file_descriptor, TCSAFLUSH, &term->raw_settings) == -1) {
         err_exit("enable_raw_mode (tcsetattr)");
     }
 }
@@ -60,8 +59,7 @@ void enable_raw_mode(terminal_t *term) {
 // disable_raw_mode sets the term's original settings
 // to be the current file_descriptor's settings.
 void disable_raw_mode(terminal_t *term) {
-    if (tcsetattr(term->file_descriptor, TCSAFLUSH, &term->original_settings) ==
-        -1) {
+    if (tcsetattr(term->file_descriptor, TCSAFLUSH, &term->original_settings) == -1) {
         err_exit("disable_raw_mode (tcsetattr)");
     }
 }
