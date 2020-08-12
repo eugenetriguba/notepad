@@ -1,7 +1,7 @@
+#include <cmocka.h>
 #include <setjmp.h>
 #include <stdarg.h>
 #include <stddef.h>
-#include <cmocka.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -36,9 +36,8 @@ void test_contents_in_notepad_include_fd_contents() {
 
 int main(void) {
     const struct CMUnitTest tests[] = {
-	cmocka_unit_test(test_startup_notepad_app_return_value),
-	cmocka_unit_test(test_contents_in_notepad_include_fd_contents)
-    };
+        cmocka_unit_test(test_startup_notepad_app_return_value),
+        cmocka_unit_test(test_contents_in_notepad_include_fd_contents)};
 
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

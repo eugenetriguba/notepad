@@ -23,7 +23,7 @@
 notepad_t *notepad_create(int file_descriptor) {
     notepad_t *notepad = malloc(sizeof(notepad_t));
     if (notepad == NULL) {
-	return NULL;
+        return NULL;
     }
 
     notepad->file_descriptor = file_descriptor;
@@ -64,22 +64,22 @@ void read_all_from_fd(notepad_t *notepad) {
     char tmp;
 
     while (1) {
-	tmp = '\0';
-	
-	if (read(notepad->file_descriptor, &tmp, 1) == -1 && errno != EAGAIN) {
-	    err_exit("read_all_from_fd (read)");
-	}
+        tmp = '\0';
 
-	if (notepad->debug_mode && tmp != '\0') {
-	    iscntrl(tmp) ? printf("%d\r\n", tmp)
-			 : printf("%d ('%c')\r\n", tmp, tmp);
-	}
+        if (read(notepad->file_descriptor, &tmp, 1) == -1 && errno != EAGAIN) {
+            err_exit("read_all_from_fd (read)");
+        }
 
-	if (tmp == 'q') {
-	    break;
-	}
+        if (notepad->debug_mode && tmp != '\0') {
+            iscntrl(tmp) ? printf("%d\r\n", tmp)
+                         : printf("%d ('%c')\r\n", tmp, tmp);
+        }
 
-	strcat(notepad->contents, &tmp);
+        if (tmp == 'q') {
+            break;
+        }
+
+        strcat(notepad->contents, &tmp);
     }
 }
 
@@ -100,4 +100,3 @@ int startup_notepad_app(notepad_t *notepad) {
 
     return 0;
 }
-

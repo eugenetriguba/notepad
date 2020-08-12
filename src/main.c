@@ -9,12 +9,11 @@ int main(int argc, char *argv[]) {
     int i;
 
     for (i = 0; i < argc; i++) {
-	if (strcmp(argv[i], "-d") == 0) {
-	    notepad->debug_mode = 1;
-	    printf("Notepad debug mode is on.\r\n");
-	}
+        if (strcmp(argv[i], "-d") == 0) {
+            notepad->debug_mode = 1;
+            printf("Notepad debug mode is on.\r\n");
+        }
     }
 
     return startup_notepad_app(notepad);
 }
-

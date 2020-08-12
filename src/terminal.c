@@ -23,18 +23,18 @@
 terminal_t *terminal_create(int file_descriptor) {
     terminal_t *term = malloc(sizeof(terminal_t));
     if (term == NULL) {
-	return NULL;
+        return NULL;
     }
 
     term->file_descriptor = file_descriptor;
 
     if (tcgetattr(term->file_descriptor, &term->original_settings) == -1) {
-	err_exit("terminal_create (tcgetattr)");
+        err_exit("terminal_create (tcgetattr)");
     }
 
     term->raw_settings = term->original_settings;
     term->raw_settings.c_iflag &=
-	~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
+        ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
     term->raw_settings.c_oflag &= ~(OPOST);
     term->raw_settings.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
     term->raw_settings.c_cflag &= ~(CSIZE | PARENB);
@@ -51,16 +51,17 @@ terminal_t *terminal_create(int file_descriptor) {
 // enable_raw_mode sets the term's raw_settings
 // to be the current file_descriptor's settings.
 void enable_raw_mode(terminal_t *term) {
-    if (tcsetattr(term->file_descriptor, TCSAFLUSH, &term->raw_settings) == -1) {
-	err_exit("enable_raw_mode (tcsetattr)");
+    if (tcsetattr(term->file_descriptor, TCSAFLUSH, &term->raw_settings) ==
+        -1) {
+        err_exit("enable_raw_mode (tcsetattr)");
     }
 }
 
 // disable_raw_mode sets the term's original settings
 // to be the current file_descriptor's settings.
 void disable_raw_mode(terminal_t *term) {
-    if (tcsetattr(term->file_descriptor, TCSAFLUSH, &term->original_settings) == -1) {
-	err_exit("disable_raw_mode (tcsetattr)");
+    if (tcsetattr(term->file_descriptor, TCSAFLUSH, &term->original_settings) ==
+        -1) {
+        err_exit("disable_raw_mode (tcsetattr)");
     }
 }
-
