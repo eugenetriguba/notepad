@@ -1,7 +1,10 @@
-#include <cmocka.h>
-#include <setjmp.h>
 #include <stdarg.h>
 #include <stddef.h>
+#include <setjmp.h>
+#include <stdint.h>
+#include <cmocka.h>
+// Cmocka includes, must be in this order.
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

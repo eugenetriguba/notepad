@@ -1,11 +1,10 @@
-#include "helpers.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
 #include "../src/notepad.h"
+#include "helpers.h"
 
 notepad_t *create_test_notepad(char *contents) {
     FILE *tmp = tmpfile();
