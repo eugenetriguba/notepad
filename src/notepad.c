@@ -62,11 +62,11 @@ void notepad_destroy(notepad_t *notepad) {
 // Args:
 //   notepad: An initialized notepad_t.
 void read_all_from_fd(notepad_t *notepad) {
-    int status = 0;
+    int status = 1;
 
     do {
         status = process_notepad_keypress(notepad);
-    } while (status != -1);
+    } while (status != 0);
 }
 
 int process_notepad_keypress(notepad_t *notepad) {
@@ -78,12 +78,12 @@ int process_notepad_keypress(notepad_t *notepad) {
 
     switch (key) {
     case CTRL_KEY('q'):
-        return -1;
+        return 0;
         break;
     }
 
     strcat(notepad->contents, &key);
-    return 0;
+    return 1;
 }
 
 char read_notepad_key(notepad_t *notepad) {
