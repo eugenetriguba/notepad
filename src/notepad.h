@@ -19,6 +19,8 @@ typedef struct {
 notepad_t *notepad_create(int file_descriptor);
 void notepad_destroy(notepad_t *notepad);
 void read_all_from_fd(notepad_t *notepad);
+char read_notepad_key(notepad_t *notepad);
+int process_notepad_keypress(notepad_t *notepad);
 
 int startup_notepad_app(notepad_t *notepad);
 

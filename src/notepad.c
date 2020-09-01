@@ -8,6 +8,7 @@
 #include <termios.h>
 #include <unistd.h>
 
+#include "keys.h"
 #include "terminal.h"
 #include "utils.h"
 
@@ -53,7 +54,7 @@ void notepad_destroy(notepad_t *notepad) {
 // and places those characters into the notepad's
 // contents.
 //
-// If a 'q' is read in, we exit the program. If the
+// If ctrl-q is read in, we exit the program. If the
 // notepad is in it's debug mode, each character's
 // ascii code is printed and, unless it is a control
 // character, it's character representation.
@@ -61,25 +62,41 @@ void notepad_destroy(notepad_t *notepad) {
 // Args:
 //   notepad: An initialized notepad_t.
 void read_all_from_fd(notepad_t *notepad) {
-    char tmp;
+    int status = 0;
 
-    while (1) {
-        tmp = '\0';
+    do {
+        status = process_notepad_keypress(notepad);
+    } while (status != -1);
+}
 
-        if (read(notepad->file_descriptor, &tmp, 1) == -1 && errno != EAGAIN) {
-            err_exit("read_all_from_fd (read)");
-        }
+int process_notepad_keypress(notepad_t *notepad) {
+    char key = read_notepad_key(notepad);
 
-        if (notepad->debug_mode && tmp != '\0') {
-            iscntrl(tmp) ? printf("%d\r\n", tmp) : printf("%d ('%c')\r\n", tmp, tmp);
-        }
-
-        if (tmp == 'q') {
-            break;
-        }
-
-        strcat(notepad->contents, &tmp);
+    if (notepad->debug_mode && key != '\0') {
+        iscntrl(key) ? printf("%d\r\n", key) : printf("%d ('%c')\r\n", key, key);
     }
+
+    switch (key) {
+    case CTRL_KEY('q'):
+        return -1;
+        break;
+    }
+
+    strcat(notepad->contents, &key);
+    return 0;
+}
+
+char read_notepad_key(notepad_t *notepad) {
+    char key;
+    int num_read = 0;
+
+    while ((num_read = read(notepad->file_descriptor, &key, 1)) != 1) {
+        if (num_read == -1 && errno != EAGAIN) {
+            err_exit("read_notepad_key read()\n");
+        }
+    }
+
+    return key;
 }
 
 // startup_notepad_app runs our notepad
@@ -93,6 +110,8 @@ void read_all_from_fd(notepad_t *notepad) {
 // Returns:
 //   0, for the exit code for main().
 int startup_notepad_app(notepad_t *notepad) {
+    printf("Welcome to notepad! Press ctrl-q to quit.\r\n");
+
     read_all_from_fd(notepad);
     printf("%s\r\n", notepad->contents);
     notepad_destroy(notepad);
