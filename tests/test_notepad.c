@@ -1,9 +1,11 @@
+// clang-format off
 #include <stdarg.h>
 #include <stddef.h>
 #include <setjmp.h>
 #include <stdint.h>
 #include <cmocka.h>
 // Cmocka includes, must be in this order.
+// clang-format on
 
 #include <stdio.h>
 #include <stdlib.h>
