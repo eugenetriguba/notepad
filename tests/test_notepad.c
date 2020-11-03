@@ -12,6 +12,7 @@
 #include <string.h>
 
 #include "../src/notepad.h"
+#include "../src/keys.h"
 #include "helpers.h"
 
 // src/notepad.c: startup_notepad_app
@@ -20,7 +21,9 @@
 // return value is 0, since this is what
 // main() will use as it's exit code.
 void test_startup_notepad_app_return_value() {
-    notepad_t *notepad = create_test_notepad("q");
+    char contents[4];
+    sprintf(contents, "%d", CTRL_KEY('q'));
+    notepad_t *notepad = create_test_notepad(contents);
 
     assert_true(startup_notepad_app(notepad) == 0);
 }
