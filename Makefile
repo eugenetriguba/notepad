@@ -7,7 +7,7 @@ SRC_FILES = src/notepad.c src/terminal.c src/utils.c
 TEST_FILES = tests/test_notepad.c tests/test_terminal.c
 TEST_HELPERS = tests/helpers.c
 
-BUILD_OUTFILE = notepad
+BUILD_OUTFILE = np
 TEST_OUTFILE = test_run
 
 
@@ -19,7 +19,7 @@ build_optimized: $(SRC_ENTRY_FILE) $(SRC_FILES)
 
 memcheck:
 	$(MAKE) build
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./notepad
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./np
 
 test: $(TEST_FILES) $(TEST_HELPERS)
 	@for file in $(TEST_FILES); do \
