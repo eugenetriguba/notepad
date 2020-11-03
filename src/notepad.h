@@ -3,16 +3,17 @@
 
 #include "terminal.h"
 
-// notepad_t represents our notepad
-// with what file descriptor we are
-// reading from, a terminal_t so we can
-// alter the terminal's settings, and we
-// are in our notepad's debug mode, and
-// our notepad contents.
+/**
+ * notepad_t represents our notepad with what
+ * file descriptor we are reading from, a terminal_t
+ * so we can alter the terminal's settings, whether
+ * we are in our notepad's debug mode, and our notepad
+ * contents.
+ */
 typedef struct {
     terminal_t *terminal;
     int file_descriptor;
-    char contents[1024];
+    char contents[1024]; // TODO: Don't hardcode this
     int debug_mode;
 } notepad_t;
 

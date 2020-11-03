@@ -3,9 +3,10 @@
 
 #include <termios.h>
 
-// terminal_t stores our terminal
-// settings and allows us to use
-// raw mode for text processing.
+/**
+ * terminal_t stores our terminal settings and
+ * allows us to use raw mode for text processing.
+ */
 typedef struct {
     int file_descriptor;
     struct termios original_settings;
