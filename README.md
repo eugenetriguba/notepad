@@ -5,7 +5,7 @@ Notepad is a simple text editor for your terminal.
 ## Building
 
 For common actions, a `Makefile` is used. To build the
-project, you can run `make build` and then `./notepad` to
+project, you can run `make build` and then `./np` to
 run the program.
 
 ## Testing
