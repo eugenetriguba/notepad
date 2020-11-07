@@ -1,5 +1,5 @@
 OPTIMIZATION_FLAG = -O0
-CC_FLAGS = -Wall -Wextra -pedantic $(OPTIMIZATION_FLAG)
+CC_FLAGS = -Wall -Wextra -pedantic $(OPTIMIZATION_FLAG) -std=c11
 
 SRC_ENTRY_FILE = src/main.c
 SRC_FILES = src/notepad.c src/terminal.c src/utils.c
@@ -12,7 +12,7 @@ TEST_OUTFILE = test_run
 
 
 build: $(SRC_ENTRY_FILE) $(SRC_FILES)
-	$(CC) $(SRC_ENTRY_FILE) $(SRC_FILES) -o $(BUILD_OUTFILE) $(CC_FLAGS) -std=c11
+	$(CC) $(SRC_ENTRY_FILE) $(SRC_FILES) -o $(BUILD_OUTFILE) $(CC_FLAGS)
 
 build_optimized: $(SRC_ENTRY_FILE) $(SRC_FILES)
 	$(MAKE) OPTIMIZATION_FLAG=-O3 build
@@ -23,7 +23,7 @@ memcheck:
 
 test: $(TEST_FILES) $(TEST_HELPERS)
 	@for file in $(TEST_FILES); do \
-	    $(CC) $(SRC_FILES) $${file} $(TEST_HELPERS) -l cmocka -o $(TEST_OUTFILE) $(CC_FLAGS) -std=gnu11; \
+	    $(CC) $(SRC_FILES) $${file} $(TEST_HELPERS) -l cmocka -o $(TEST_OUTFILE) $(CC_FLAGS); \
 	    echo "Running $${file}"; \
 	    ./$(TEST_OUTFILE); \
 	    echo -e "\n"; \
