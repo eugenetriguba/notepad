@@ -50,6 +50,7 @@ notepad_t *notepad_create(int file_descriptor) {
  */
 void notepad_destroy(notepad_t *notepad) {
     disable_raw_mode(notepad->terminal);
+    free(notepad->terminal);
     free(notepad);
 }
 
