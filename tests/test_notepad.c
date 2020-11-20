@@ -15,11 +15,13 @@
 #include "../src/keys.h"
 #include "helpers.h"
 
-// src/notepad.c: startup_notepad_app
-//
-// Ensure that the startup_notepad_app's
-// return value is 0, since this is what
-// main() will use as it's exit code.
+/**
+ * src/notepad.c: startup_notepad_app
+ *
+ * Ensure that the startup_notepad_app's
+ * return value is 0, since this is what
+ * main() will use as it's exit code.
+ */
 void test_startup_notepad_app_return_value() {
     char contents[4];
     sprintf(contents, "%d", CTRL_KEY('q'));
@@ -28,14 +30,18 @@ void test_startup_notepad_app_return_value() {
     assert_true(startup_notepad_app(notepad) == 0);
 }
 
-// src/notepad.c: read_all_from_fd
-//
-// Ensure that the contents in the file descriptor
-// are read into the notepad's contents, excluding
-// the quit 'q' command.
+/**
+ * src/notepad.c: read_all_from_fd
+ *
+ * Ensure that the contents in the file descriptor
+ * are read into the notepad's contents, excluding
+ * the quit 'q' command.
+ */
 void test_contents_in_notepad_include_fd_contents() {
     char *contents = "aaa";
-    notepad_t *notepad = create_test_notepad("aaaq");
+    sprintf(contents, "%d", CTRL_KEY('q'));
+
+    notepad_t *notepad = create_test_notepad(contents);
 
     read_all_from_fd(notepad);
 
